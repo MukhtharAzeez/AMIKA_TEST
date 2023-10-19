@@ -23,14 +23,3 @@ function App() {
 }
 
 export default App
-
-
-
-
-
-
-// Axios.post(
-//   `https://api.cloudinary.com/v1_1/dr2hks7gt/image/upload`
-// );
-
-// formData.append('upload_preset', 'fetovrfe');
