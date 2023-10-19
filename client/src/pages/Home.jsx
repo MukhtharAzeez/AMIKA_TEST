@@ -9,6 +9,7 @@ function Home() {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
   const [messageColor, setMessageColor] = useState("red");
+  const [image, setImage] = useState("");
   const navigate = useNavigate();
 
   const fetchBlogs = async () => {
@@ -32,17 +33,35 @@ function Home() {
     }
 
   useEffect(() => {
+    if(!localStorage.getItem("token")) navigate('/login')
     fetchBlogs();
   }, []);
 
   const handleSubmit = async () => {
+      if (title.length == 0) return;
+      if (content.length == 0) return;
+      if (image.length == 0) return;
+      const formData = new FormData();
+      formData.append("upload_preset", "fetovrfe");
+      formData.append("file", image);
+      const imageLink = await axios.post(
+        `https://api.cloudinary.com/v1_1/dr2hks7gt/image/upload`,
+        formData
+      );
       try {
-        const response = await axios.post("http://localhost:4000/createBlog", {
-          title,
-          content,
-        },{
-            headers: {'Authorization': `Bearer ${localStorage.getItem('token')}`}
-        });
+        const response = await axios.post(
+          "http://localhost:4000/createBlog",
+          {
+            title,
+            content,
+            image: imageLink.data.secure_url,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         console.log(response)
         if (response.data.status) {
             setMessageColor('green')
@@ -65,10 +84,18 @@ function Home() {
       <p style={{ color: messageColor }}>{error}</p>
 
       {!blogCreate ? (
-        <div>
+        <div style={{display: 'flex', gap: '40px'}}>
           {blogs.map((blog) => {
             return (
-              <div key={blog._id} style={{ display: "flex" }}>
+              <div
+                key={blog._id}
+                style={{ display: "flex", flexDirection: "column" }}
+              >
+                <img
+                  style={{ width: "100px", height: "100px" }}
+                  src={blog.image}
+                />
+
                 <p>{blog.title} - </p>
                 <p>{blog.content} - </p>
                 <p>{blog.author}</p>
@@ -90,10 +117,17 @@ function Home() {
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
+          <input type="file" onChange={(e) => setImage(e.target.files[0])} />
           <button onClick={handleSubmit}>Create</button>
         </>
       )}
-    <button style={{position:'absolute', top: '20px', right: '20px'}} onClick={handleLogout}> Logout</button>
+      <button
+        style={{ position: "absolute", top: "20px", right: "20px" }}
+        onClick={handleLogout}
+      >
+        {" "}
+        Logout
+      </button>
     </div>
   );
 }

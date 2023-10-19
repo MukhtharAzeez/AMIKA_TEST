@@ -11,10 +11,11 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/home" element={<Home/>} />
-          <Route path="/admin-home" element={<AdminHome/>} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/admin-home" element={<AdminHome />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </>
@@ -22,3 +23,14 @@ function App() {
 }
 
 export default App
+
+
+
+
+
+
+// Axios.post(
+//   `https://api.cloudinary.com/v1_1/dr2hks7gt/image/upload`
+// );
+
+// formData.append('upload_preset', 'fetovrfe');

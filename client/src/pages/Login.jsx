@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import {  useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -7,6 +7,10 @@ function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  // useEffect(()=>{
+  //   if(localStorage.getItem('token')) navigate('/home')
+  // },[])
 
   const handleSubmit = async () => {
     try {

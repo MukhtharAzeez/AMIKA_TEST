@@ -16,6 +16,10 @@ const schema = new mongoose.Schema({
     approved: {
         type: Boolean,
         required: true
+    },
+    image: {
+        type: String,
+        required: true
     }
 },{
     timeStamp: true

@@ -66,7 +66,8 @@ app.post('/createBlog', async(req, res) => {
                 title: req.body.title,
                 content: req.body.content,
                 author: decoded.name,
-                approved: true
+                approved: true,
+                image: req.body.image,
             })
             const response = await blog.save()
             res.json({ status: true, message: "Blog Created successfully" })
@@ -76,7 +77,8 @@ app.post('/createBlog', async(req, res) => {
                 title: req.body.title,
                 content: req.body.content,
                 author: decoded.name,
-                approved: false
+                approved: false,
+                image: req.body.image,
             })
             const response = await blog.save()
             res.json({ status: true, message: "Blog is created , you can see the blog after get approve from admin" })
@@ -90,11 +92,12 @@ app.post('/createBlog', async(req, res) => {
 
 app.post('/editBlog', authorize,async(req, res) => {
     try{
-        const { title, content, id } = req.body
+        const { title, content,image, id } = req.body
         await BlogModel.updateOne({ _id: id }, {
             $set: {
                 title,
-                content
+                content,
+                image
             }
         })
         res.json({ status: true, message: "Blog is updated" })
